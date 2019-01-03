@@ -18,23 +18,9 @@
         <developer>
             <id>chenyihong</id>
             <name>chenyihong</name>
-            <email>chenyihong1@xiaomi.com</email>
+            <email>896169578@qq.com</email>
         </developer>
     </developers>
-
-    <distributionManagement>
-        <repository>
-            <id>central</id>
-            <name>c3-jm-artifactory02-backup.bj-releases</name>
-            <url>http://artifactory.d.xiaomi.net:80/artifactory/public</url>
-            <layout>default</layout>
-        </repository>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <name>c3-jm-artifactory02-backup.bj-snapshots</name>
-            <url>http://artifactory.d.xiaomi.net:80/artifactory/public</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <dependencies>
         <dependency>
