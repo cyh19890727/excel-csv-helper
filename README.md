@@ -7,6 +7,7 @@
 2. 能导出bean列表到excel，csv文件中，目前excel仅支持xlsx格式
 3. 用poi的SXSSFWorkbook类导出excel，无需将大量待刷新到IO流的记录缓存到内存，避免大量缓存导致OOM，当待导出的记录较多时，可以采用分页的方式多次调用write方法
 
+
 ## 样例代码
 ```
 public class TestBean {
@@ -82,3 +83,6 @@ excelWriter.write(list, TestBean.class);
 excelWriter.close();
 
 ```
+
+## 使用问题
+大家在使用过程中遇到问题，欢迎反馈给我，个人邮箱是896169578@qq.com，我看到后会及时回复。
