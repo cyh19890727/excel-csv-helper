@@ -5,7 +5,7 @@
 ### 1.0-SNAPSHOT
 1. 在待导出的bean上能配置导出格式，包含标题、单元格类型、字段特殊输出、列顺序配置
 2. 能导出bean列表到excel，csv文件中，目前excel仅支持xlsx格式
-3. 用poi的SXSSFWorkbook类导出excel，无需将大量待刷新到IO流的记录缓存到内存，避免大量缓存导致OOM，当待导出的记录较多时，可以采用分页的方式调用write方法
+3. 用poi的SXSSFWorkbook类导出excel，无需将大量待刷新到IO流的记录缓存到内存，避免大量缓存导致OOM，当待导出的记录较多时，可以采用分页的方式多次调用write方法
 
 ## 样例代码
 ```
