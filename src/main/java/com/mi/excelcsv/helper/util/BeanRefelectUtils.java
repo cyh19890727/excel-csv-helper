@@ -4,6 +4,9 @@ import com.mi.excelcsv.helper.exception.ExcelCsvHelperException;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author 陈奕鸿
@@ -18,7 +21,7 @@ public class BeanRefelectUtils {
         return "get" + Character.toUpperCase(firstChar) + filedName.substring(1, filedName.length());
     }
 
-    public static Object getBeanFieldValueByGetterMethod(Object object, Field field, Class type) {
+    public static Object getBeanFieldValueByGetterMethod(Object object, Field field, Class type) throws ExcelCsvHelperException {
         String getterMethodName = getBeanGetterMethodName(field);
         try {
             Method method = type.getMethod(getterMethodName);
@@ -28,5 +31,15 @@ public class BeanRefelectUtils {
             throw new ExcelCsvHelperException("getBeanFieldValueByGetterMethod fail");
         }
 
+    }
+
+    public static List<Field> getAllFields(Class type) {
+        List<Field> fields = new ArrayList<Field>();
+        Class clazz = type;
+        while (clazz != Object.class) {
+            fields.addAll(0, Arrays.asList(clazz.getDeclaredFields()));
+            clazz = clazz.getSuperclass();
+        }
+        return fields;
     }
 }

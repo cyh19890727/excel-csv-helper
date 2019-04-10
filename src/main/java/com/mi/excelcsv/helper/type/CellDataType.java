@@ -1,4 +1,4 @@
-package com.mi.excelcsv.helper.constant;
+package com.mi.excelcsv.helper.type;
 
 /**
  * @author 陈奕鸿
@@ -29,5 +29,9 @@ public enum CellDataType {
     /**
      *  error cell type,  for excel
      */
-    ERROR;
+    ERROR,
+    /**
+     *  no cell type
+     */
+    NONE;
 }

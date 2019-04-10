@@ -3,6 +3,7 @@ package com.mi.excelcsv.helper.writer.impl;
 import com.mi.excelcsv.helper.annotation.resolver.BeanAnnoResolver;
 import com.mi.excelcsv.helper.exception.ExcelCsvHelperException;
 import com.mi.excelcsv.helper.serializer.impl.DefaultSerializer;
+import com.mi.excelcsv.helper.type.CellDataType;
 import com.mi.excelcsv.helper.util.BeanRefelectUtils;
 import com.mi.excelcsv.helper.util.CellDataTypeConvertUtils;
 import com.mi.excelcsv.helper.writer.ExcelBeanWriter;
@@ -39,6 +40,8 @@ public class XlsxExcelBeanWriterImpl implements ExcelBeanWriter {
 
     private Map<Integer, BeanAnnoResolver> resolverMap;
 
+    private boolean flushed = false;
+
     public XlsxExcelBeanWriterImpl(OutputStream outputStream) {
         this(DEFAULT_WINDOW_SIZE, outputStream);
     }
@@ -69,13 +72,13 @@ public class XlsxExcelBeanWriterImpl implements ExcelBeanWriter {
      *
      * @param sheetIndex, sheet页索引，在0到sheet总数减1之间，超出返回会抛出ExcelCsvHelperException异常
      */
-    public void setSheetIndex(int sheetIndex) {
+    public void setSheetIndex(int sheetIndex) throws ExcelCsvHelperException {
         if (sheetIndex < 0 || sheetIndex >= workbook.getNumberOfSheets()) {
             throw new ExcelCsvHelperException("illegal sheetIndex arguments");
         }
     }
 
-    public <E> void write(List<E> list, Class<E> beanType) {
+    public <E> void write(List<E> list, Class<E> beanType) throws ExcelCsvHelperException {
         // 获取当前操作的sheet
         int sheetNum = workbook.getNumberOfSheets();
         SXSSFSheet sheet;
@@ -113,12 +116,24 @@ public class XlsxExcelBeanWriterImpl implements ExcelBeanWriter {
         }
     }
 
-    public void close() {
+    public void flush() throws ExcelCsvHelperException {
+        if (flushed) {
+            throw new ExcelCsvHelperException("can only flush once");
+        }
         try {
             workbook.write(outputStream);
-            workbook.dispose();
+            flushed = true;
         } catch (IOException e) {
-            throw new ExcelCsvHelperException("");
+            throw new ExcelCsvHelperException("flush to outputstream fail");
+        }
+    }
+
+    public void close() throws ExcelCsvHelperException {
+        workbook.dispose();
+        try {
+            outputStream.close();
+        }  catch (IOException e) {
+            throw new ExcelCsvHelperException("close outputstream fail");
         }
     }
 
@@ -137,20 +152,52 @@ public class XlsxExcelBeanWriterImpl implements ExcelBeanWriter {
     /**
      * 将当个bean写入行
      */
-    private void writeRowToSheet(SXSSFSheet sheet, BeanAnnoResolver resolver, Object element, int rowNum) {
+    private void writeRowToSheet(SXSSFSheet sheet, BeanAnnoResolver resolver, Object element, int rowNum) throws ExcelCsvHelperException {
         SXSSFRow sxssfRow = sheet.createRow(rowNum);
         List<Field> fieldList = resolver.getFieldList();
         for (int i = 0; i < fieldList.size(); i++) {
             Field field = fieldList.get(i);
             Object obj = BeanRefelectUtils.getBeanFieldValueByGetterMethod(element, field, resolver.getBeanType());
             SXSSFCell cell = sxssfRow.createCell(i);
-            cell.setCellType(CellDataTypeConvertUtils.getExcelCellTypeByCellDateType(resolver.getCellDataTypeList().get(i)));
+            if (obj == null) {
+                cell.setCellType(CellType.BLANK);
+                continue;
+            }
+            Object serializeResult = obj;
             if (resolver.getSerializerList().get(i) != null && resolver.getSerializerList().get(i).getClass() != DefaultSerializer.class) {
-                Object serializeResult = resolver.getSerializerList().get(i).serialize(obj, resolver.getArgsList().get(i));
-                cell.setCellValue(serializeResult.toString());
+                serializeResult = resolver.getSerializerList().get(i).serialize(obj, resolver.getArgsList().get(i));
+            }
+            setCellValueByCellType(cell, serializeResult, resolver.getCellDataTypeList().get(i));
+        }
+    }
+
+    /**
+     * 依据cellDataType的类型设置cell值，第一期只实现STRING、NUMERIC、BLANK类型
+     */
+    private void setCellValueByCellType(Cell cell, Object obj, CellDataType cellDataType) {
+        if (cellDataType == CellDataType.NONE) {
+            // value类型为Number类型，设置CellDataType.NUMERIC，其他类型先都按照String单元格类型处理，后续依项目此处再升级
+            if (obj instanceof Number) {
+                cell.setCellType(CellType.NUMERIC);
+                cell.setCellValue(Double.parseDouble(obj.toString()));
             } else {
+                cell.setCellType(CellType.STRING);
                 cell.setCellValue(obj.toString());
             }
+            return;
+        }
+
+        cell.setCellType(CellDataTypeConvertUtils.getExcelCellTypeByCellType(cellDataType));
+        switch (cellDataType) {
+            case NUMERIC:
+                cell.setCellValue(Double.parseDouble(obj.toString()));
+                break;
+            case BLANK:
+                break;
+            case STRING:
+            default:
+                cell.setCellValue(obj.toString());
+                break;
         }
     }
 }

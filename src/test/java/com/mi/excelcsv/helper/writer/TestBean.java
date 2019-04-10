@@ -1,9 +1,9 @@
 package com.mi.excelcsv.helper.writer;
 
 import com.mi.excelcsv.helper.annotation.ColumnFormat;
-import com.mi.excelcsv.helper.constant.CellDataType;
 import com.mi.excelcsv.helper.serializer.impl.BooleanSerializer;
 import com.mi.excelcsv.helper.serializer.impl.DateSerializer;
+import com.mi.excelcsv.helper.type.CellDataType;
 
 import java.util.Date;
 
@@ -19,7 +19,7 @@ public class TestBean {
 
     private String sex;
 
-    @ColumnFormat(dateType = CellDataType.NUMERIC)
+    @ColumnFormat
     private int age;
 
     @ColumnFormat(title = "出生日期", order = 2, serializer = DateSerializer.class, args = {"yyyy-MM-dd HH:mm:ss"})

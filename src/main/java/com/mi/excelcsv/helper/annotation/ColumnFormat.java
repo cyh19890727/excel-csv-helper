@@ -1,8 +1,8 @@
 package com.mi.excelcsv.helper.annotation;
 
-import com.mi.excelcsv.helper.constant.CellDataType;
 import com.mi.excelcsv.helper.serializer.AbstractCellSerializer;
 import com.mi.excelcsv.helper.serializer.impl.DefaultSerializer;
+import com.mi.excelcsv.helper.type.CellDataType;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -28,7 +28,7 @@ public @interface ColumnFormat {
 
     String title() default "";
 
-    CellDataType dateType() default CellDataType.STRING;
+    CellDataType cellType() default CellDataType.NONE;
 
     Class<? extends AbstractCellSerializer> serializer() default DefaultSerializer.class;
 

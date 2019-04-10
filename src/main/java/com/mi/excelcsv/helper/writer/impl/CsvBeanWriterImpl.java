@@ -5,7 +5,7 @@ import com.mi.excelcsv.helper.exception.ExcelCsvHelperException;
 import com.mi.excelcsv.helper.processer.CellSerializerProcesser;
 import com.mi.excelcsv.helper.serializer.AbstractCellSerializer;
 import com.mi.excelcsv.helper.serializer.impl.DefaultSerializer;
-import com.mi.excelcsv.helper.writer.BeanWriter;
+import com.mi.excelcsv.helper.writer.CsvFormatBeanWriter;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
@@ -20,7 +20,7 @@ import java.util.List;
  * @Description
  * @Date 创建于 18-12-24 下午5:30
  */
-public class CsvBeanWriterImpl implements BeanWriter {
+public class CsvBeanWriterImpl implements CsvFormatBeanWriter {
 
     private CsvBeanWriter csvBeanWriter;
 
@@ -39,7 +39,7 @@ public class CsvBeanWriterImpl implements BeanWriter {
     }
 
 
-    public <E> void write(List<E> list, Class<E> beanType) {
+    public <E> void write(List<E> list, Class<E> beanType) throws ExcelCsvHelperException {
         if (beanAnnoResolver == null) {
             beanAnnoResolver = BeanAnnoResolver.getResolerByBeanType(beanType);
         } else {
@@ -83,7 +83,7 @@ public class CsvBeanWriterImpl implements BeanWriter {
 
     }
 
-    public void close() {
+    public void close() throws ExcelCsvHelperException {
         try {
             csvBeanWriter.close();
         } catch (IOException e) {
@@ -91,7 +91,7 @@ public class CsvBeanWriterImpl implements BeanWriter {
         }
     }
 
-    private void writeHeader(BeanAnnoResolver resolver) {
+    private void writeHeader(BeanAnnoResolver resolver) throws ExcelCsvHelperException {
         if (titleWritten) {
             return ;
         }

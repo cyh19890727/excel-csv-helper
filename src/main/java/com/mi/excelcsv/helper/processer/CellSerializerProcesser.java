@@ -20,7 +20,7 @@ public class CellSerializerProcesser extends CellProcessorAdaptor {
     }
 
     public Object execute(final Object value, final CsvContext context) {
-        Object result = cellSerializer.serialize(value, args);
+        Object result = value == null ? null : cellSerializer.serialize(value, args);
         return next.execute(result, context);
     }
 }

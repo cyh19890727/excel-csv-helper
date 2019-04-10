@@ -1,5 +1,7 @@
 package com.mi.excelcsv.helper.writer;
 
+import com.mi.excelcsv.helper.exception.ExcelCsvHelperException;
+
 import java.util.List;
 
 /**
@@ -9,7 +11,7 @@ import java.util.List;
  * @Description
  * @Date 创建于 18-12-21 下午7:38
  */
-public interface BeanWriter {
+interface BeanWriter {
 
     /**
      * 将bean列表写入流中
@@ -17,11 +19,11 @@ public interface BeanWriter {
      * @param list 待写入bean列表
      * @param beanType， 待写入的bean类型
      */
-    <E> void write(List<E> list, Class<E> beanType);
+    <E> void write(List<E> list, Class<E> beanType) throws ExcelCsvHelperException;
 
     /**
      *  关闭writer对应的流, 不需要再执行写入操作时，需要执行close操作
      */
-    void close();
+    void close() throws ExcelCsvHelperException;
 
 }

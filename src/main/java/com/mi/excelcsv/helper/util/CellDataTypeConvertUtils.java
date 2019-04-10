@@ -1,6 +1,6 @@
 package com.mi.excelcsv.helper.util;
 
-import com.mi.excelcsv.helper.constant.CellDataType;
+import com.mi.excelcsv.helper.type.CellDataType;
 import org.apache.poi.ss.usermodel.CellType;
 
 /**
@@ -10,7 +10,7 @@ import org.apache.poi.ss.usermodel.CellType;
  */
 public class CellDataTypeConvertUtils {
 
-    public static CellType getExcelCellTypeByCellDateType(CellDataType dataType) {
+    public static CellType getExcelCellTypeByCellType(CellDataType dataType) {
         switch (dataType) {
             case STRING :
                 return CellType.STRING;

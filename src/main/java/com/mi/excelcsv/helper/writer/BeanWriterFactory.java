@@ -1,6 +1,6 @@
 package com.mi.excelcsv.helper.writer;
 
-import com.mi.excelcsv.helper.constant.ExcelType;
+import com.mi.excelcsv.helper.type.ExcelType;
 import com.mi.excelcsv.helper.writer.impl.CsvBeanWriterImpl;
 import com.mi.excelcsv.helper.writer.impl.XlsxExcelBeanWriterImpl;
 import org.supercsv.prefs.CsvPreference;
@@ -37,7 +37,7 @@ public class BeanWriterFactory {
      *
      * @param writer, csv内容输出流
      */
-    public static BeanWriter createCsvWriter(CsvPreference csvPreference, java.io.Writer writer) {
+    public static CsvFormatBeanWriter createCsvWriter(CsvPreference csvPreference, java.io.Writer writer) {
         return new CsvBeanWriterImpl(csvPreference, writer);
     }
 

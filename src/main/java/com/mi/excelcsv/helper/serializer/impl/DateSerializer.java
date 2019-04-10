@@ -18,18 +18,14 @@ public class DateSerializer extends AbstractCellSerializer {
     @Override
     public Object serialize(Object object, String args[]) {
         String dateFormat;
-        if (args.length >= 0) {
+        if (args.length > 0) {
             dateFormat = args[0];
         } else {
             dateFormat = DEFAULT_FORMAT;
         }
 
         final SimpleDateFormat formatter;
-        try {
-            formatter = new SimpleDateFormat(dateFormat);
-        } catch(IllegalArgumentException e) {
-            throw new ExcelCsvHelperException(String.format("'%s' is not a valid date format", dateFormat));
-        }
+        formatter = new SimpleDateFormat(dateFormat);
 
         return formatter.format((Date) object);
     }

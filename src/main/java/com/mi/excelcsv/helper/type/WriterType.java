@@ -1,4 +1,4 @@
-package com.mi.excelcsv.helper.constant;
+package com.mi.excelcsv.helper.type;
 
 public enum WriterType {
     /**

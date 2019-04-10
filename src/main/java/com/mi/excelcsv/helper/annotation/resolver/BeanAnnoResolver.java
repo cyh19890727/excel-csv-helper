@@ -1,9 +1,10 @@
 package com.mi.excelcsv.helper.annotation.resolver;
 
 import com.mi.excelcsv.helper.annotation.ColumnFormat;
-import com.mi.excelcsv.helper.constant.CellDataType;
 import com.mi.excelcsv.helper.exception.ExcelCsvHelperException;
 import com.mi.excelcsv.helper.serializer.AbstractCellSerializer;
+import com.mi.excelcsv.helper.type.CellDataType;
+import com.mi.excelcsv.helper.util.BeanRefelectUtils;
 import com.mi.excelcsv.helper.util.StringUtils;
 
 import java.lang.reflect.Field;
@@ -39,10 +40,12 @@ public class BeanAnnoResolver {
 
     }
 
-    public static BeanAnnoResolver getResolerByBeanType(Class beanType) {
+    public static BeanAnnoResolver getResolerByBeanType(Class beanType) throws ExcelCsvHelperException {
         BeanAnnoResolver resolver = new BeanAnnoResolver();
         resolver.setBeanType(beanType);
-        Field[] fields = beanType.getDeclaredFields();
+        List<Field> fieldList = BeanRefelectUtils.getAllFields(beanType);
+        Field[] fields = new Field[fieldList.size()];
+        fields = BeanRefelectUtils.getAllFields(beanType).toArray(fields);
         for (int i = 0; i < fields.length; i++) {
             ColumnFormat columnFormat = fields[i].getAnnotation(ColumnFormat.class);
             // 配置了注解的是需要输出的列
@@ -57,7 +60,7 @@ public class BeanAnnoResolver {
                     resolver.getTitleList().add(fields[i].getName());
                 }
                 // 获取序列化配置
-                resolver.getCellDataTypeList().add(columnFormat.dateType());
+                resolver.getCellDataTypeList().add(columnFormat.cellType());
                 Class<? extends AbstractCellSerializer> serializer = columnFormat.serializer();
                 try {
                     resolver.getSerializerList().add(serializer.newInstance());

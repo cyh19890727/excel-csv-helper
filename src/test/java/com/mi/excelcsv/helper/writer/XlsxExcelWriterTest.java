@@ -1,6 +1,6 @@
 package com.mi.excelcsv.helper.writer;
 
-import com.mi.excelcsv.helper.constant.ExcelType;
+import com.mi.excelcsv.helper.type.ExcelType;
 import org.junit.Test;
 
 import java.io.FileOutputStream;
@@ -24,17 +24,35 @@ public class XlsxExcelWriterTest {
     public void testExcelWriter() {
         try {
             FileOutputStream fileOutputStream = new FileOutputStream("test.xlsx");
+            List<TestBean> list = new ArrayList<TestBean>();
+
             TestBean testBean = new TestBean();
             testBean.setName("aa");
             testBean.setSex("male");
             testBean.setAge(18);
             testBean.setDate(new Date());
             testBean.setEnable(true);
-            List<TestBean> list = new ArrayList<TestBean>();
             list.add(testBean);
 
-            BeanWriter excelWriter = BeanWriterFactory.createExcelWriter(ExcelType.XLSX_SUFFIX, fileOutputStream);
+            testBean = new TestBean();
+            testBean.setName("bb");
+            testBean.setSex("male");
+            testBean.setDate(new Date());
+            testBean.setEnable(false);
+            list.add(testBean);
+
+            testBean = new TestBean();
+            testBean.setName("cc");
+            testBean.setSex("male");
+            testBean.setAge(20);
+            testBean.setDate(new Date());
+            testBean.setEnable(true);
+            list.add(testBean);
+
+            ExcelBeanWriter excelWriter = BeanWriterFactory.createExcelWriter(ExcelType.XLSX_SUFFIX, fileOutputStream);
             excelWriter.write(list, TestBean.class);
+            excelWriter.write(list, TestBean.class);
+            excelWriter.flush();
             excelWriter.close();
         } catch (Exception e) {
             e.printStackTrace();

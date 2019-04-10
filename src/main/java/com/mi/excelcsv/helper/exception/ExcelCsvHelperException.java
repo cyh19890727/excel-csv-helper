@@ -5,7 +5,7 @@ package com.mi.excelcsv.helper.exception;
  * @Description
  * @Date 创建于 18-12-24 下午3:54
  */
-public class ExcelCsvHelperException extends RuntimeException {
+public class ExcelCsvHelperException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
