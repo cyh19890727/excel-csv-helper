@@ -2,12 +2,15 @@
 在待导出的bean字段上配置标题、顺序、单元格类型、字段特殊输出，输出bean列表excel或csv文件只需三行代码，用起来很方便，依赖poi和super-csv工具包。
 
 ## 版本功能
-### 1.0-SNAPSHOT
+### 1.0.1-SNAPSHOT
 1. 在待导出的bean上能配置导出格式，包含标题、单元格类型、字段特殊输出、列顺序配置
 2. 能导出bean列表到excel，csv文件中，目前excel仅支持xlsx格式
 
-### 1.0.1-SNAPSHOT
+### 1.0.2-SNAPSHOT
 1. 支持excel、csv动态列导出功能，用法参考ExcelDynColTest、CsvDynColTest测试类
+
+### 1.0.3-SNAPSHOT
+1. 支持将读入的excel、csv的行转换为bean列表，用法参考ExcelBeanReaderTest、CsvBeanReaderTest测试类
 
 ## 样例代码
 ```

@@ -11,7 +11,7 @@ import java.util.List;
  * @Description
  * @Date 创建于 18-12-21 下午7:38
  */
-interface BeanWriter {
+interface BeanWriter extends AutoCloseable {
 
     /**
      * 将bean列表写入流中

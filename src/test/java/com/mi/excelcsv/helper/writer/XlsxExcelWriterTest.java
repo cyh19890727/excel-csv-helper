@@ -3,6 +3,7 @@ package com.mi.excelcsv.helper.writer;
 import com.mi.excelcsv.helper.type.ExcelType;
 import org.junit.Test;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,39 +22,37 @@ public class XlsxExcelWriterTest {
      *  aa  |  2018-12-25 16:58:13 | 18  | 是
      */
     @Test
-    public void testExcelWriter() {
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream("test.xlsx");
-            List<TestBean> list = new ArrayList<TestBean>();
+    public void testExcelWriter() throws FileNotFoundException {
+        List<TestBean> list = new ArrayList<TestBean>();
 
-            TestBean testBean = new TestBean();
-            testBean.setName("aa");
-            testBean.setSex("male");
-            testBean.setAge(18);
-            testBean.setDate(new Date());
-            testBean.setEnable(true);
-            list.add(testBean);
+        TestBean testBean = new TestBean();
+        testBean.setName("aa");
+        testBean.setSex("male");
+        testBean.setAge(18);
+        testBean.setDate(new Date());
+        testBean.setEnable(true);
+        list.add(testBean);
 
-            testBean = new TestBean();
-            testBean.setName("bb");
-            testBean.setSex("male");
-            testBean.setDate(new Date());
-            testBean.setEnable(false);
-            list.add(testBean);
+        testBean = new TestBean();
+        testBean.setName("bb");
+        testBean.setSex("male");
+        testBean.setDate(new Date());
+        testBean.setEnable(false);
+        list.add(testBean);
 
-            testBean = new TestBean();
-            testBean.setName("cc");
-            testBean.setSex("male");
-            testBean.setAge(20);
-            testBean.setDate(new Date());
-            testBean.setEnable(true);
-            list.add(testBean);
+        testBean = new TestBean();
+        testBean.setName("cc");
+        testBean.setSex("male");
+        testBean.setAge(20);
+        testBean.setDate(new Date());
+        testBean.setEnable(true);
+        list.add(testBean);
 
-            ExcelBeanWriter excelWriter = BeanWriterFactory.createExcelWriter(ExcelType.XLSX_SUFFIX, fileOutputStream);
+        FileOutputStream fileOutputStream = new FileOutputStream("test.xlsx");
+        try (ExcelBeanWriter excelWriter = BeanWriterFactory.createExcelWriter(ExcelType.XLSX_SUFFIX, fileOutputStream);) {
             excelWriter.write(list, TestBean.class);
             excelWriter.write(list, TestBean.class);
             excelWriter.flush();
-            excelWriter.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

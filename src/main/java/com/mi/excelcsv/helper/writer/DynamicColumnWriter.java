@@ -11,7 +11,7 @@ import java.util.Map;
  * @Description
  * @Date 创建于 19-3-1 下午4:22
  */
-interface DynamicColumnWriter {
+interface DynamicColumnWriter extends AutoCloseable {
 
     /**
      *  写列标题
