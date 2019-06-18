@@ -1,5 +1,12 @@
 # Excel, Csv工具
-在待导出的bean字段上配置标题、顺序、单元格类型、字段特殊输出，输出bean列表excel或csv文件只需三行代码，用起来很方便，依赖poi和super-csv工具包。
+在待导出的bean字段上配置标题、顺序、单元格类型、字段特殊输出，输出bean列表excel或csv文件只需三行代码，用起来很方便，依赖poi和super-csv工具包，版本主要功能点如下表：
+
+| 功能点                            |
+| :-----------:     |
+| 静态bean列表导出生成excel、cvs文件        |
+| 动态bean列表导出生成excel、cvs文件        |
+| 从excel、cvs文件读取行生成静态bean列表    |
+
 
 ## 版本功能
 ### 1.0.1-SNAPSHOT
